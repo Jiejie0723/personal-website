@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈杰 - AI 产品经理</title>
+  <style>
+    :root {
+      --paper: #f4efe6;
+      --paper-deep: #ebe2d3;
+      --ink: #211d18;
+      --muted: #71675c;
+      --line: rgba(33, 29, 24, 0.18);
+      --accent: #a5482e;
+      --accent-soft: #dfb69c;
+      --green: #63715a;
+      --panel: rgba(255, 251, 244, 0.62);
+      --shadow: 0 24px 70px rgba(63, 48, 32, 0.12);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 16%, rgba(223, 182, 156, 0.38), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,0.16), transparent 42%),
+        var(--paper);
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.6;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.32;
+      background-image:
+        linear-gradient(rgba(33, 29, 24, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(33, 29, 24, 0.026) 1px, transparent 1px);
+      background-size: 42px 42px, 42px 42px;
+      mask-image: linear-gradient(to bottom, #000, transparent 88%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site {
+      width: min(var(--max), calc(100% - 44px));
+      margin: 0 auto;
+    }
+
+    .nav-links {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 14px 12px;
+      transform: translateY(-50%);
+      background: rgba(255, 251, 244, 0.34);
+      border: 1px solid transparent;
+      backdrop-filter: blur(16px);
+      color: var(--muted);
+      font-size: 14px;
+      transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .nav-links:hover,
+    .nav-links:focus-within {
+      background: rgba(255, 251, 244, 0.78);
+      border-color: rgba(33, 29, 24, 0.12);
+      box-shadow: 0 18px 50px rgba(63, 48, 32, 0.10);
+    }
+
+    .nav-links a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      min-height: 24px;
+      white-space: nowrap;
+      outline: none;
+    }
+
+    .nav-text {
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateX(8px);
+      transition: max-width 180ms ease, opacity 160ms ease, transform 180ms ease;
+    }
+
+    .nav-line {
+      content: "";
+      width: 22px;
+      height: 2px;
+      background: rgba(33, 29, 24, 0.16);
+      transition: width 180ms ease, background 180ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links:hover .nav-text,
+    .nav-links:focus-within .nav-text {
+      max-width: 86px;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .nav-links a:hover .nav-line,
+    .nav-links a:focus .nav-line,
+    .nav-links a.is-active .nav-line {
+      width: 32px;
+      background: var(--accent);
+    }
+
+    .nav-links a.is-active .nav-line {
+      background: var(--ink);
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      align-items: center;
+      gap: 54px;
+      padding: 64px 0 54px;
+    }
+
+    .hero-copy {
+      max-width: 820px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .name-row strong {
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 850px;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(58px, 7.4vw, 106px);
+      line-height: 0.93;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .value {
+      max-width: 650px;
+      margin: 24px 0 0;
+      color: #3a332c;
+      font-size: clamp(20px, 2vw, 27px);
+      line-height: 1.45;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff8ef;
+      font-size: 15px;
+      font-weight: 700;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #342c24;
+    }
+
+    .contact-note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-card {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 490px;
+      padding: 32px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .role-block {
+      margin-top: 58px;
+    }
+
+    .role-block p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .role-block h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .proof-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 46px;
+    }
+
+    .proof-item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .proof-item b {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+      line-height: 1;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .proof-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    section {
+      padding: 94px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.42fr 1fr;
+      gap: 44px;
+      align-items: start;
+      margin-bottom: 46px;
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .proof-strip {
+      padding: 36px 0;
+      background: rgba(235, 226, 211, 0.68);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .strip-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .strip-item {
+      min-height: 144px;
+      padding: 24px;
+      background: rgba(255, 251, 244, 0.58);
+    }
+
+    .strip-item strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .strip-item span {
+      display: block;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .work-card {
+      padding: 30px;
+      min-height: 330px;
+      background: rgba(255, 251, 244, 0.56);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .work-card.featured {
+      grid-row: span 2;
+      min-height: 678px;
+      background:
+        linear-gradient(155deg, rgba(165, 72, 46, 0.10), transparent 42%),
+        rgba(255, 251, 244, 0.66);
+    }
+
+    .work-card h3 {
+      margin: 0;
+      max-width: 580px;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(31px, 3.4vw, 54px);
+      line-height: 1.04;
+      font-weight: 500;
+    }
+
+    .work-card p {
+      margin: 22px 0 0;
+      max-width: 590px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .tag {
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      color: #51483f;
+      background: rgba(244, 239, 230, 0.62);
+      font-size: 13px;
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 42px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .result-row b {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--accent);
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .result-row span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .experience-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .experience-item {
+      display: grid;
+      grid-template-columns: 220px 1fr 180px;
+      gap: 34px;
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .time {
+      color: var(--accent);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .experience-item h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .experience-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .company {
+      color: var(--muted);
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 58px;
+      align-items: start;
+    }
+
+    .about-copy {
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(30px, 3.5vw, 54px);
+      line-height: 1.1;
+      font-weight: 500;
+    }
+
+    .about-detail {
+      display: grid;
+      gap: 22px;
+    }
+
+    .about-detail p {
+      margin: 0;
+      color: #3f372f;
+      font-size: 17px;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .skill {
+      padding: 18px;
+      background: rgba(255, 251, 244, 0.55);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .skill strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .contact-section {
+      padding-bottom: 50px;
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1fr 0.75fr;
+      gap: 44px;
+      align-items: end;
+      padding: 42px;
+      background: var(--ink);
+      color: #fff8ef;
+    }
+
+    .contact-panel h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(42px, 6vw, 86px);
+      line-height: 0.98;
+      font-weight: 500;
+    }
+
+    .contact-panel p {
+      margin: 20px 0 0;
+      max-width: 580px;
+      color: rgba(255, 248, 239, 0.72);
+      font-size: 17px;
+    }
+
+    .contact-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(255, 248, 239, 0.22);
+      color: #fff8ef;
+      font-size: 16px;
+    }
+
+    .contact-link span {
+      color: rgba(255, 248, 239, 0.58);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 0 36px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 960px) {
+      .hero,
+      .section-head,
+      .about-wrap,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 54px;
+      }
+
+      .hero-card {
+        min-height: auto;
+      }
+
+      .strip-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .work-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-card.featured {
+        min-height: 520px;
+      }
+
+      .experience-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .company {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .site {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      h1 {
+        font-size: 58px;
+      }
+
+      .value {
+        font-size: 19px;
+      }
+
+      .strip-grid,
+      .result-row,
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .hero-card,
+      .work-card,
+      .contact-panel {
+        padding: 24px;
+      }
+
+      .proof-item {
+        grid-template-columns: 98px 1fr;
+      }
+
+      .contact-link {
+        display: grid;
+        gap: 4px;
+      }
+
+      footer {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-links" aria-label="页面导航">
+    <a href="#work" data-section="work">
+      <span class="nav-text">代表项目</span>
+      <span class="nav-line" aria-hidden="true"></span>
+    </a>
+    <a href="#experience" data-section="experience">
+      <span class="nav-text">实习经历</span>
+      <span class="nav-line" aria-hidden="true"></span>
+    </a>
+    <a href="#about" data-section="about">
+      <span class="nav-text">关于我</span>
+      <span class="nav-line" aria-hidden="true"></span>
+    </a>
+    <a href="#contact" data-section="contact">
+      <span class="nav-text">联系我</span>
+      <span class="nav-line" aria-hidden="true"></span>
+    </a>
+  </nav>
+
+  <main id="top">
+    <section class="site hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="name-row">
+          <strong>陈杰</strong>
+          <span>AI 产品经理 / 东南大学硕士在读</span>
+        </div>
+        <h1 id="hero-title">把 AI 能力变成可交付的产品系统。</h1>
+        <p class="value">
+          关注 AI Agent、RAG、生成式内容生产与 B 端平台，把算法能力、业务流程和质量评估连接起来，推动产品从 POC 走向真实规模化使用。
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="mailto:jiejiec0723@gmail.com">联系我</a>
+          <span class="contact-note">27届，可立即到岗，可实习 6 个月</span>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="核心证明">
+        <div>
+          <div class="status">
+            <span>求职岗位</span>
+            <span></span>
+          </div>
+          <div class="role-block">
+            <p>当前方向</p>
+            <h2>AI x 产品增长 x B 端平台</h2>
+          </div>
+        </div>
+        <div class="proof-list">
+          <div class="proof-item">
+            <b>2000+</b>
+            <span>支持 3D 生成式 AI 建模模型交付，覆盖日均 214w PV 级生产场景。</span>
+          </div>
+          <div class="proof-item">
+            <b>20+</b>
+            <span>AI Agent 投放助手覆盖业务线，沉淀知识问答与数据分析闭环。</span>
+          </div>
+          <div class="proof-item">
+            <b>1/113</b>
+            <span>本科综合排名第一，保研至东南大学智慧建造 AI x 工程方向。</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="proof-strip" aria-label="结果证明">
+      <div class="site strip-grid">
+        <div class="strip-item">
+          <strong>200%+</strong>
+          <span>生产建模人效提升，从 5 单到 10 单/人/天。</span>
+        </div>
+        <div class="strip-item">
+          <strong>60%</strong>
+          <span>推动数据查询性能优化，降低复杂任务等待成本。</span>
+        </div>
+        <div class="strip-item">
+          <strong>30w+</strong>
+          <span>校园权益增长项目带来学生认证，超预期目标 298%。</span>
+        </div>
+        <div class="strip-item">
+          <strong>40+</strong>
+          <span>每周分析真实 Bad Case，驱动 Prompt 与策略迭代。</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="site" id="work" aria-labelledby="work-title">
+      <div class="section-head">
+        <div class="section-kicker">代表项目与结果</div>
+        <h2 class="section-title" id="work-title">从问题拆解到系统落地，重视指标、反馈和可复用方法。</h2>
+      </div>
+
+      <div class="work-grid">
+        <article class="work-card featured">
+          <div>
+            <h3>3D 生成式 AI 建模生产与质检平台</h3>
+            <p>
+              在高德地图数据产品部，参与 3D 空间建模从建模、质检、返修到交付的生产链路，配合算法团队把 AI 辅助能力产品化，建立 SOP、工具链路与质量评估体系。
+            </p>
+            <div class="tags">
+              <span class="tag">AIGC</span>
+              <span class="tag">3D 内容生产</span>
+              <span class="tag">AI 质检</span>
+              <span class="tag">Benchmark</span>
+            </div>
+          </div>
+          <div class="result-row">
+            <div>
+              <b>2000+</b>
+              <span>模型交付支持</span>
+            </div>
+            <div>
+              <b>30%</b>
+              <span>质检效率提升</span>
+            </div>
+            <div>
+              <b>214w</b>
+              <span>日均 PV 场景</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div>
+            <h3>AI Agent 投放平台</h3>
+            <p>
+              基于 RAG 与多 Agent 架构构建投放助手，覆盖知识问答与数据分析；通过意图路由、置信度展示、人工兜底和反馈闭环提升可解释性与稳定性。
+            </p>
+            <div class="tags">
+              <span class="tag">RAG</span>
+              <span class="tag">Multi-Agent</span>
+              <span class="tag">Bad Case 分析</span>
+            </div>
+          </div>
+          <div class="result-row">
+            <div>
+              <b>20%</b>
+              <span>满意度提升</span>
+            </div>
+            <div>
+              <b>6.3pd</b>
+              <span>每周人力节省</span>
+            </div>
+            <div>
+              <b>15%</b>
+              <span>审核效率提升</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div>
+            <h3>校园权益产品增长</h3>
+            <p>
+              以学生认证增量为目标，策划线上线下营销活动，沉淀全国高校执行 SOP，并用 SQL、Excel 和用户反馈构建认证转化漏斗与用户画像分层。
+            </p>
+            <div class="tags">
+              <span class="tag">增长运营</span>
+              <span class="tag">用户调研</span>
+              <span class="tag">转化漏斗</span>
+            </div>
+          </div>
+          <div class="result-row">
+            <div>
+              <b>800+</b>
+              <span>高校覆盖</span>
+            </div>
+            <div>
+              <b>40w+</b>
+              <span>全域曝光</span>
+            </div>
+            <div>
+              <b>10%</b>
+              <span>转化率提升</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="site" id="experience" aria-labelledby="experience-title">
+      <div class="section-head">
+        <div class="section-kicker">实习经历</div>
+        <h2 class="section-title" id="experience-title">在真实业务里做 AI 产品，在指标里验证判断。</h2>
+      </div>
+
+      <div class="experience-list">
+        <article class="experience-item">
+          <div class="time">2025.12<br>2026.05</div>
+          <div>
+            <h3>AI 应用产品经理实习生</h3>
+            <p>
+              负责 3D 生成式 AI 建模生产与质检平台相关工作，完成 AI 研究建模 POC 验证，推动生产 SOP、AI 辅助工具链与质量标准体系建设。
+            </p>
+          </div>
+          <div class="company">高德地图<br>数据产品部</div>
+        </article>
+
+        <article class="experience-item">
+          <div class="time">2025.08<br>2025.12</div>
+          <div>
+            <h3>投放平台 AI 产品经理实习生</h3>
+            <p>
+              参与 0 到 1 智能化广告与数据分析系统建设，围绕 RAG、多 Agent、上下文组织、性能优化与 GUI Agent 预览能力推进产品闭环。
+            </p>
+          </div>
+          <div class="company">美团<br>资源管理部</div>
+        </article>
+
+        <article class="experience-item">
+          <div class="time">2025.04<br>2025.08</div>
+          <div>
+            <h3>产品运营实习生</h3>
+            <p>
+              围绕校园权益增长搭建活动执行 SOP、认证转化漏斗和用户反馈分析机制，连接权益策略、渠道转化与产品迭代方向。
+            </p>
+          </div>
+          <div class="company">美团<br>用户增长与运营部</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="site" id="about" aria-labelledby="about-title">
+      <div class="section-head">
+        <div class="section-kicker">关于我</div>
+        <h2 class="section-title" id="about-title">理工科背景，产品化表达。</h2>
+      </div>
+
+      <div class="about-wrap">
+        <div class="about-copy">
+          我擅长把复杂问题拆成可讨论、可验证、可迭代的产品模块。
+        </div>
+        <div class="about-detail">
+          <p>
+            东南大学智慧建造 AI x 工程硕士在读，江南大学土木工程本科，曾以综合排名 1/113 保研。学习过机器学习、深度学习、计算机视觉等课程，也在真实业务中参与过 AI Agent、RAG 系统、3D 生成式内容生产链路与增长产品项目。
+          </p>
+          <p>
+            我的优势不是只会讲 AI 概念，而是能把业务场景、用户反馈、算法边界、评估指标和交付流程放在同一张图里看，然后推动团队逐步落地。
+          </p>
+          <div class="skill-grid">
+            <div class="skill">
+              <strong>AI 产品</strong>
+              RAG 产品设计、多 Agent 系统、Prompt 工程、模型评估、Bad Case 分析
+            </div>
+            <div class="skill">
+              <strong>数据分析</strong>
+              SQL、窗口函数、Python、Pandas、NumPy、PyTorch、Excel、Tableau
+            </div>
+            <div class="skill">
+              <strong>产品方法</strong>
+              用户调研、策略制定、SOP 搭建、原型设计、反馈闭环
+            </div>
+            <div class="skill">
+              <strong>表达协作</strong>
+              内容创作、PPT、Axure、跨部门沟通，CET-6 500+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="contact-panel">
+        <div>
+          <h2 id="contact-title">一起聊聊 AI 产品、实习机会或合作。</h2>
+          <p>
+            我正在寻找 AI 产品经理相关机会，关注 Agent、RAG、生成式内容生产、B 端平台与数据驱动增长方向。
+          </p>
+        </div>
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:jiejiec0723@gmail.com">
+            <span>邮箱</span>
+            <strong>jiejiec0723@gmail.com</strong>
+          </a>
+          <a class="contact-link" href="tel:18965006213">
+            <span>电话 / 微信</span>
+            <strong>18965006213</strong>
+          </a>
+          <div class="contact-link">
+            <span>到岗时间</span>
+            <strong>可立即到岗，可实习 6 个月</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <span>陈杰 - AI 产品经理</span>
+    <span>单页个人网站首页</span>
+  </footer>
+  <script>
+    const sectionLinks = Array.from(document.querySelectorAll(".nav-links a"));
+    const observedSections = sectionLinks
+      .map((link) => document.getElementById(link.dataset.section))
+      .filter(Boolean);
+
+    const updateActiveNav = () => {
+      const anchor = window.innerHeight * 0.42;
+      let current = observedSections[0]?.id;
+
+      observedSections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= anchor) {
+          current = section.id;
+        }
+      });
+
+      sectionLinks.forEach((link) => {
+        link.classList.toggle("is-active", link.dataset.section === current);
+      });
+    };
+
+    updateActiveNav();
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    window.addEventListener("resize", updateActiveNav);
+  </script>
+</body>
+</html>
